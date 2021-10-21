@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 //LOGIN
-app.post('/login', login);
+app.post('/', login);
 
 //SIGNUP
 app.post('/signup', signup);
