@@ -9,16 +9,20 @@ async function login(req, res) {
     } = req.body;
 
     try {
-        const user = await connection.query('SELECT name, password FROM users WHERE email = $1;', [email]);
+        const user = await connection.query('SELECT id, name, password FROM users WHERE email = $1;', [email]);
         if(user.rows.length === 0) return res.sendStatus(404);
         if(bcrypt.compareSync(password, user.rows[0].password)) {
-            return res.status(202).send({
-                token: uuid()
+            let token = uuid();
+            await connection.query('INSERT INTO logged_users (user_id, token) VALUES ($1, $2);', [user.rows[0].id, token]);
+            res.status(202).send({
+                token
             });
+
         } else {
             return res.sendStatus(403);
         }
     } catch (error) {
+        console.log(error)
         res.sendStatus(500);
     }
 }
