@@ -1,7 +1,7 @@
 import connection from "../database/database.js";
 
 async function logoutUser (req, res) {
-    const token = req.header("authorization");
+    const token = req.header('authorization').replace("Bearer ", "");
 
     try {
         const userToken = await connection.query("SELECT token FROM logged_users WHERE token = $1", [token])
