@@ -27,6 +27,10 @@ async function postBalances (req, res) {
         balance 
     } = req.body;
 
+    const token = req.header('authorization').replace("Bearer ", "");
+
+    if(!token) return res.sendStatus(401);
+
     try {
         await connection.query('INSERT INTO balances (date, description, balance) VALUES ($1, $2, $3);', [date, description, balance]);
         res.sendStatus(201);
