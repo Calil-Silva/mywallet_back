@@ -23,4 +23,4 @@ app.post('/balances', postBalances);
 //LOGOUT
 app.post('/logout', logoutUser);
 
-app.listen(4000);
+export default app;

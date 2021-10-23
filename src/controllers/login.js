@@ -14,7 +14,8 @@ async function login(req, res) {
         if(bcrypt.compareSync(password, user.rows[0].password)) {
             let token = uuid();
             await connection.query('INSERT INTO logged_users (user_id, token) VALUES ($1, $2);', [user.rows[0].id, token]);
-            res.status(202).send({
+            return res.status(202).send({
+                name: user.rows[0].name,
                 token
             });
 
