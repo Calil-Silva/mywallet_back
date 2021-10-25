@@ -2,7 +2,8 @@ import connection from "../database/database.js";
 import dayjs from "dayjs";
 
 async function listBalances (req, res) {
-    const token = req.header('authorization').replace("Bearer ", "");
+    const token = req.header('authorization')?.replace("Bearer ", "");
+
     try {
         const loggedUsers = (await connection.query('SELECT * FROM logged_users WHERE token = $1;', [token])).rows;
         if(loggedUsers.length !== 0) {
