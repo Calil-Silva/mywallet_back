@@ -9,9 +9,9 @@ async function logoutUser (req, res) {
             await connection.query("DELETE FROM logged_users WHERE token = $1;", [token]);
             return res.sendStatus(200);
         } 
-        res.sendStatus(401);
+        res.status(401).send({message : "E-mail de autenticação enviado ao usuário desta conta."});
     } catch (error) {
-        res.sendStatus(500);
+        res.status(500).send({message: "Ocorreu um erro inesperado, tente novamente mais tarde."});
     }
 }
 

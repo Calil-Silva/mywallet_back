@@ -23,7 +23,6 @@ async function login(req, res) {
             return res.status(403).send({message: "E-mail/senha incorretos"});
         }
     } catch (error) {
-        console.log(error)
         res.sendStatus(500);
     }
 }
