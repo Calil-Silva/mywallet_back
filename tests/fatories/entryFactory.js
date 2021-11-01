@@ -1,11 +1,9 @@
-import { signInUser } from "./sessionsFactory";
-import connection from "../../src/database/database";
-import dayjs from "dayjs";
+import connection from '../../src/database/database';
 
-export async function newEntry() {
-  const id = (await connection.query("select id from users;")).rows[0].id;
-  const token = (await connection.query("select token from logged_users;"))
-    .rows[0].token;
+export default async function newEntry() {
+  const { id } = (await connection.query('select id from users;')).rows[0];
+  const { token } = (await connection.query('select token from logged_users;'))
+    .rows[0];
 
   const entry = (
     await connection.query(
@@ -17,7 +15,7 @@ export async function newEntry() {
                 ($1, $2, $3, $4)
             RETURNING balance, date, description;
     `,
-      [id, new Date().toLocaleString("pt-br"), "teste", 23.95]
+      [id, new Date().toLocaleString('pt-br'), 'teste', 23.95],
     )
   ).rows[0];
 

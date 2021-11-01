@@ -26,5 +26,13 @@
     "pg": "^8.7.1",
     "supertest": "^6.1.6",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-import": "^2.25.2",
+    "husky": "7.0.4",
+    "prettier": "2.4.1"
   }
 }
