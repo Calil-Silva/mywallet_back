@@ -1,9 +1,15 @@
 import dotenv from 'dotenv';
 
-const envFile = process.env.NODE_ENV === 'prod'
-  ? '.env'
-  : '.env.test';
+const envFile = (environment) => {
+  const connections = {
+    prod: '.env',
+    test: '.env.test',
+    cloud: '.env.heroku',
+  };
+
+  return connections[environment] || connections['test'];
+};
 
 dotenv.config({
-  path: envFile,
+  path: envFile(process.env.NODE_ENV),
 });

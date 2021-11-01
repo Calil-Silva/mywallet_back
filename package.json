@@ -6,7 +6,8 @@
   "main": "app.js",
   "scripts": {
     "start:prod": "NODE_ENV=prod npx jest --watchAll",
-    "start": "NODE_ENV=test npx jest --watchAll"
+    "start:test": "NODE_ENV=test npx jest --watchAll",
+    "start:cloud": "NODE_ENV=cloud npx jest --watchAll"
   },
   "keywords": [],
   "author": "",
