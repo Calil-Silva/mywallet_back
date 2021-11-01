@@ -10,7 +10,7 @@ export default async function login(req, res) {
 
   try {
     const user = await connection
-      .query('SELECT id, name, password FROM users WHERE email = $1;',
+      .query('SELECT * FROM users WHERE email = $1;',
         [email]);
 
     if (user.rows.length === 0) {

@@ -5,7 +5,7 @@ async function listBalances(req, res) {
   const token = req?.header('authorization')?.replace('Bearer ', '');
 
   if (!token) {
-    return res.status(400).send({ message: 'Insira um token válido' });
+    return res.status(400).send({ message: 'Insira um token' });
   }
 
   try {
@@ -27,7 +27,7 @@ async function listBalances(req, res) {
 
       return res.status(200).send(balances);
     }
-    return res.status(401).send({ message: 'Acesso negado!' });
+    return res.status(401).send({ message: 'Acesso negado, token inválido!' });
   } catch (error) {
     return res
       .status(500)

@@ -12,7 +12,7 @@ export async function createUser() {
   };
 
   const insertedUser = await connection.query(
-    'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *;',
+    'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id;',
     [user.name, user.email, user.hashedPassword],
   );
 

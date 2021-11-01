@@ -76,7 +76,7 @@ describe('GET /balances', () => {
       .set('Authorization', `Bearer ${fakeToken}`);
 
     expect(result.status).toEqual(401);
-    expect(result.body).toEqual({ message: 'Acesso negado!' });
+    expect(result.body).toEqual({ message: 'Acesso negado, token inválido!' });
   });
 
   it('Should return response status 200 and the list of entries', async () => {
