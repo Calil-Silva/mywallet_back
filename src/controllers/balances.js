@@ -2,7 +2,11 @@ import dayjs from 'dayjs';
 import connection from '../database/database.js';
 
 async function listBalances(req, res) {
-  const token = req.header('authorization')?.replace('Bearer ', '');
+  const token = req?.header('authorization')?.replace('Bearer ', '');
+
+  if (!token) {
+    return res.status(400).send({ message: 'Insira um token válido' });
+  }
 
   try {
     const loggedUsers = (
@@ -38,9 +42,7 @@ async function postBalances(req, res) {
 
   if (!token) return res.status(401).send({ message: 'Acesso negado!' });
   if (!date || !description || !balance) {
-    return res
-      .status(206)
-      .send({ message: 'Preencha todos os campos.' });
+    return res.status(206).send({ message: 'Preencha todos os campos.' });
   }
 
   try {
