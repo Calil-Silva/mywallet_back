@@ -3,7 +3,11 @@ import '../src/setup.js';
 import { v4 as uuid } from 'uuid';
 import app from '../src/app.js';
 import connection from '../src/database/database.js';
-import { createUser, deleteUser } from './fatories/userFactory.js';
+import {
+  createUser,
+  deleteUser,
+  user as newUser,
+} from './fatories/userFactory.js';
 import { signInUser, signOutUser } from './fatories/sessionsFactory.js';
 import newEntry from './fatories/entryFactory.js';
 
@@ -32,8 +36,8 @@ describe('POST /', () => {
 
   it('Should return response status 403 when password did not match', async () => {
     const user = {
-      email: (await createUser()).email,
-      password: (await createUser()).wrongPassword,
+      email: newUser.email,
+      password: newUser.wrongPassword(),
     };
     const result = await agent.post('/').send(user);
 
@@ -43,8 +47,8 @@ describe('POST /', () => {
 
   it('Should return response status 202 and a body (name/token), if user is registered and password matches', async () => {
     const user = {
-      email: (await createUser()).email,
-      password: (await createUser()).password,
+      email: newUser.email,
+      password: newUser.password,
     };
     const result = await agent.post('/').send(user);
 
@@ -53,6 +57,20 @@ describe('POST /', () => {
       name: expect.any(String),
       token: expect.any(String),
     });
+  });
+});
+
+describe('POST /signup', () => {
+  it('Should return status code 406 if password did not match', async () => {
+    const user = {
+      name: newUser.email,
+      email: newUser.email,
+      password: newUser.password,
+      confirmedPassword: newUser.wrongPassword,
+    };
+
+    const result = await agent.post('/signup').send(user);
+    expect(result.status).toEqual(406);
   });
 });
 
