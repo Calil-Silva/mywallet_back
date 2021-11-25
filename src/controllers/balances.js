@@ -4,30 +4,24 @@ import connection from '../database/database.js';
 async function listBalances(req, res) {
   const token = req?.header('authorization')?.replace('Bearer ', '');
 
-  if (!token) {
-    return res.status(400).send({ message: 'Insira um token' });
-  }
-
   try {
     const loggedUsers = (
       await connection.query('SELECT * FROM logged_users WHERE token = $1;', [
         token,
       ])
     ).rows;
-    if (loggedUsers.length !== 0) {
-      const balances = (
-        await connection.query('SELECT * FROM balances where user_id = $1;', [
-          loggedUsers[0].user_id,
-        ])
-      ).rows.map((b) => ({
-        date: dayjs(b.date).format('DD/MM/YY'),
-        description: b.description,
-        balance: b.balance,
-      }));
 
-      return res.status(200).send(balances);
-    }
-    return res.status(401).send({ message: 'Acesso negado, token inválido!' });
+    const balances = (
+      await connection.query('SELECT * FROM balances where user_id = $1;', [
+        loggedUsers[0].user_id,
+      ])
+    ).rows.map((b) => ({
+      date: dayjs(b.date).format('DD/MM/YY'),
+      description: b.description,
+      balance: b.balance,
+    }));
+
+    return res.status(200).send(balances);
   } catch (error) {
     return res
       .status(500)
@@ -40,7 +34,6 @@ async function postBalances(req, res) {
 
   const token = req.header('authorization').replace('Bearer ', '');
 
-  if (!token) return res.status(401).send({ message: 'Acesso negado!' });
   if (!date || !description || !balance) {
     return res.status(206).send({ message: 'Preencha todos os campos.' });
   }

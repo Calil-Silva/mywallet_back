@@ -1,6 +1,6 @@
 import connection from '../database/database.js';
 
-export default async function authentication(req, res) {
+export default async function authentication(req, res, next) {
   const token = req?.header('authorization')?.replace('Bearer ', '');
 
   try {
@@ -19,7 +19,7 @@ export default async function authentication(req, res) {
         .send({ message: 'Acesso negado, token inválido!' });
     }
 
-    return res.sendStatus(200);
+    next();
   } catch (error) {
     res
       .status(500)
