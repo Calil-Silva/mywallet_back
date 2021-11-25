@@ -5,9 +5,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start:prod": "NODE_ENV=prod npx jest --watchAll",
-    "start:test": "NODE_ENV=test npx jest --watchAll",
-    "start:cloud": "NODE_ENV=cloud npx jest --watchAll",
+    "start:prod": "NODE_ENV=prod npx jest -i --watchAll",
+    "start:test": "NODE_ENV=test npx jest -i --watchAll",
+    "start:cloud": "NODE_ENV=cloud npx jest -i --watchAll",
     "start:node:test": "NODE_ENV=test nodemon ./src/server.js",
     "start:node:prod": "NODE_ENV=prod nodemon ./src/server.js",
     "start": "NODE_ENV=cloud node ./src/server.js"

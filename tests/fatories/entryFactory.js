@@ -15,7 +15,7 @@ export default async function newEntry() {
                 ($1, $2, $3, $4)
             RETURNING balance, date, description;
     `,
-      [id, new Date().toLocaleString('pt-br'), 'teste', 23.95],
+      [id, new Date().toLocaleDateString('pt-br'), 'teste', 23.95],
     )
   ).rows[0];
 
