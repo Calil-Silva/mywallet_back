@@ -13,49 +13,6 @@ afterAll(async () => {
   connection.end();
 });
 
-describe('POST /', () => {
-  beforeEach(async () => {
-    await createUser();
-  });
-
-  afterEach(async () => {
-    await deleteUser();
-  });
-
-  it('Should return response status 404 when user is not registered', async () => {
-    const user = {};
-    const result = await agent.post('/').send(user);
-
-    expect(result.status).toEqual(404);
-    expect(result.body).toEqual({ message: 'Usuário não encontrado' });
-  });
-
-  it('Should return response status 403 when password did not match', async () => {
-    const user = {
-      email: (await createUser()).email,
-      password: (await createUser()).wrongPassword,
-    };
-    const result = await agent.post('/').send(user);
-
-    expect(result.status).toEqual(403);
-    expect(result.body).toEqual({ message: 'E-mail/senha incorretos' });
-  });
-
-  it('Should return response status 202 and a body (name/token), if user is registered and password matches', async () => {
-    const user = {
-      email: (await createUser()).email,
-      password: (await createUser()).password,
-    };
-    const result = await agent.post('/').send(user);
-
-    expect(result.status).toEqual(202);
-    expect(result.body).toEqual({
-      name: expect.any(String),
-      token: expect.any(String),
-    });
-  });
-});
-
 describe('GET /balances', () => {
   beforeEach(async () => {
     await createUser();
