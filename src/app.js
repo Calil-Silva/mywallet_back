@@ -15,10 +15,8 @@ app.post('/', login);
 
 app.post('/signup', signup);
 
-app.get('/authentication', authentication);
-
-app.get('/balances', listBalances);
-app.post('/balances', postBalances);
+app.get('/balances', authentication, listBalances);
+app.post('/balances', authentication, postBalances);
 
 app.post('/logout', logoutUser);
 
