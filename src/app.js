@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post('/', userController.signIn);
+app.post('/signin', userController.signIn);
 app.post('/signup', userController.signUp);
 app.delete('/signout', userController.signOut);
 app.get('/balances', authentication, balanceController.listBalances);
