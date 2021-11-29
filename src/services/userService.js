@@ -44,9 +44,9 @@ async function createUser({ name, email, password }) {
 async function signOutUser({ token }) {
   const userSession = await sessionRepository.findSessionByToken({ token });
 
-  if (userSession) return [];
+  if (!userSession) return [];
 
-  await sessionRepository.deleteUserSession();
+  await sessionRepository.deleteUserSession({ token });
 
   return true;
 }

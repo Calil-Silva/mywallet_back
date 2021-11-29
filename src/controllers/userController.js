@@ -48,13 +48,17 @@ async function signIn(req, res) {
 }
 
 async function signOut(req, res) {
+  const token = req.headers.authorization?.replace('Bearer ', '');
+
   try {
-    const userToken = await userService.signOutUser();
+    const userToken = await userService.signOutUser({ token });
+
     if (userToken.length === 0) {
-      res.status(401).send({
+      return res.status(401).send({
         message: 'E-mail de autenticação enviado ao usuário desta conta.',
       });
     }
+
     return res.sendStatus(200);
   } catch (error) {
     res.status(500).send({

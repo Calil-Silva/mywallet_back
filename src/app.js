@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.post('/', userController.signIn);
 app.post('/signup', userController.signUp);
-app.post('/logout', userController.signOut);
+app.delete('/signout', userController.signOut);
 app.get('/balances', authentication, listBalances);
 app.post('/balances', authentication, postBalances);
 
