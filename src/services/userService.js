@@ -1,9 +1,10 @@
 import bcrypt from 'bcrypt';
 import { v4 as uuid } from 'uuid';
-import * as userRepositories from '../repositories/userRepositories.js';
+import * as userRepository from '../repositories/userRepository.js';
+import * as sessionRepository from '../repositories/sessionRepository.js';
 
 async function createNewSession({ email, password }) {
-  const userDb = await userRepositories.findUserByEmail({ email });
+  const userDb = await userRepository.findUserByEmail({ email });
 
   if (!userDb) return [];
 
@@ -15,7 +16,7 @@ async function createNewSession({ email, password }) {
 
   const token = uuid();
 
-  await userRepositories.createSession({
+  await sessionRepository.createSession({
     userId: userDb.id,
     token,
   });
@@ -29,23 +30,23 @@ async function createNewSession({ email, password }) {
 }
 
 async function createUser({ name, email, password }) {
-  const isAlreadyRegistered = await userRepositories.findUserByEmail({ email });
+  const isAlreadyRegistered = await userRepository.findUserByEmail({ email });
 
   if (isAlreadyRegistered) return null;
 
   const encryptedPassword = bcrypt.hashSync(password, 10);
 
-  await userRepositories.createUser({ name, email, encryptedPassword });
+  await userRepository.createUser({ name, email, encryptedPassword });
 
   return true;
 }
 
 async function signOutUser({ token }) {
-  const userSession = await userRepositories.findSessionByToken({ token });
+  const userSession = await sessionRepository.findSessionByToken({ token });
 
   if (userSession) return [];
 
-  const deleteSession = await userRepositories.deleteUserSession();
+  await sessionRepository.deleteUserSession();
 
   return true;
 }
