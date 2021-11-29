@@ -1,5 +1,4 @@
-import bcrypt from 'bcrypt';
-import connection from '../database/database.js';
+import * as userServices from '../services/userServices.js';
 
 export default async function signup(req, res) {
   const {
@@ -11,18 +10,16 @@ export default async function signup(req, res) {
   }
 
   try {
-    const usersEmails = await connection.query(
-      'SELECT * FROM users WHERE email = $1;',
-      [email],
-    );
-    if (usersEmails.rowCount !== 0) {
+    const isValidEmail = await userServices.createUser({
+      name,
+      email,
+      password,
+    });
+
+    if (!isValidEmail) {
       return res.status(409).send({ message: 'Email já registrado!' });
     }
-    const encryptedPassword = bcrypt.hashSync(password, 10);
-    await connection.query(
-      'INSERT INTO users (name, email, password) VALUES ($1, $2, $3);',
-      [name, email, encryptedPassword],
-    );
+
     res.sendStatus(201);
   } catch (error) {
     res.status(500).send({ message: 'Ocorreu um erro inesperado' });
