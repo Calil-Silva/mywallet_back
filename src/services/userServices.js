@@ -40,4 +40,14 @@ async function createUser({ name, email, password }) {
   return true;
 }
 
-export { createNewSession, createUser };
+async function signOutUser({ token }) {
+  const userSession = await userRepositories.findSessionByToken({ token });
+
+  if (userSession) return [];
+
+  const deleteSession = await userRepositories.deleteUserSession();
+
+  return true;
+}
+
+export { createNewSession, createUser, signOutUser };

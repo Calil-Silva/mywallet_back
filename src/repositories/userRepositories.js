@@ -24,4 +24,14 @@ async function createUser({ name, email, encryptedPassword }) {
   );
 }
 
+async function findSessionByToken({token}) {
+  const userToken = await connection.query('SELECT token FROM logged_users WHERE token = $1', [token]);
+
+  return userToken.rows[0];
+}
+
+async function deleteUserSession({token}) {
+  return connection.query('DELETE FROM logged_users WHERE token = $1;', [token]);
+}
+
 export { findUserByEmail, createSession, createUser };
