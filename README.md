@@ -41,6 +41,14 @@
 
 This project was designed with node.js and express. To run this project in your personal computer, make sure to run `npm i` first. And, if you want to make a better management of scripts, I advise you to run `npm i ntl`, since it gives you the control to choose witch script to run withou the need to decorate each of them.
 
+## dump_sql
+
+Please notice that there are available SQL scripts for postgresSQL. But you will also need to add the following datestyle:
+
+```
+ALTER DATABASE "my_database_name" SET datestyle TO "ISO, DMY";
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
