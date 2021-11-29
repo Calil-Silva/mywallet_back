@@ -1,9 +1,8 @@
 # Schema
 
-- Login / Sign Up / Logout
-- Homepage or subscription
-- Deliver Review
-- Plans
+- Login / Signup / Logout
+- Balance
+- Entry debit and credit
 
 # Technologies
 
@@ -70,3 +69,7 @@ Runs the app in the test environment. This was created just for testing proposes
 Runs the app in the test mode with jest.
 
 **You will also see any lint errors in the console.
+
+## Developers
+
+- Calil Silva
