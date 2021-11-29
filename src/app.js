@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-import { listBalances, postBalances } from './controllers/balances.js';
 import authentication from './controllers/authentication.js';
 import * as userController from './controllers/userController.js';
+import * as balanceController from './controllers/balanceController.js';
 
 const app = express();
 
@@ -12,7 +12,7 @@ app.use(express.json());
 app.post('/', userController.signIn);
 app.post('/signup', userController.signUp);
 app.delete('/signout', userController.signOut);
-app.get('/balances', authentication, listBalances);
-app.post('/balances', authentication, postBalances);
+app.get('/balances', authentication, balanceController.listBalances);
+app.post('/balances', authentication, balanceController.postBalances);
 
 export default app;

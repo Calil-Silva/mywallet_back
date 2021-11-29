@@ -10,8 +10,10 @@ export default async function authentication(req, res, next) {
 
     const findLoggedUser = await connection.query(
       'SELECT * FROM logged_users WHERE token = $1;',
-      [token],
+      [token]
     );
+
+    req.locals = findLoggedUser?.rows[0]?.user_id;
 
     if (findLoggedUser.rowCount === 0) {
       return res
