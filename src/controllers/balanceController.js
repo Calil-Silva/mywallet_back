@@ -1,27 +1,12 @@
-import dayjs from 'dayjs';
 import connection from '../database/database.js';
+import * as balanceService from '../services/balanceService.js';
 
 async function listBalances(req, res) {
-  const token = req?.header('authorization')?.replace('Bearer ', '');
-
+  const userId = req.locals;
   try {
-    const loggedUsers = (
-      await connection.query('SELECT * FROM logged_users WHERE token = $1;', [
-        token,
-      ])
-    ).rows;
+    const userBalances = await balanceService.listEntries({ userId });
 
-    const balances = (
-      await connection.query('SELECT * FROM balances where user_id = $1;', [
-        loggedUsers[0].user_id,
-      ])
-    ).rows.map((b) => ({
-      date: dayjs(b.date).format('DD/MM/YY'),
-      description: b.description,
-      balance: b.balance,
-    }));
-
-    return res.status(200).send(balances);
+    return res.status(200).send(userBalances);
   } catch (error) {
     return res
       .status(500)
@@ -42,12 +27,12 @@ async function postBalances(req, res) {
     const userId = (
       await connection.query(
         'SELECT user_id FROM logged_users WHERE token = $1',
-        [token],
+        [token]
       )
     ).rows[0].user_id;
     await connection.query(
       'INSERT INTO balances (user_id, date, description, balance) VALUES ($1, $2, $3, $4);',
-      [userId, date, description, balance],
+      [userId, date, description, balance]
     );
     return res.status(201).send({ message: 'Inserido com sucesso!' });
   } catch (error) {
