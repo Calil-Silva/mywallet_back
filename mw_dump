@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 12.8 (Ubuntu 12.8-0ubuntu0.20.04.1)
--- Dumped by pg_dump version 12.8 (Ubuntu 12.8-0ubuntu0.20.04.1)
+-- Dumped from database version 12.9 (Ubuntu 12.9-0ubuntu0.20.04.1)
+-- Dumped by pg_dump version 12.9 (Ubuntu 12.9-0ubuntu0.20.04.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -28,8 +28,8 @@ CREATE TABLE public.balances (
     id integer NOT NULL,
     user_id integer NOT NULL,
     date date NOT NULL,
-    description text,
-    balance numeric
+    description character varying(255) NOT NULL,
+    balance numeric NOT NULL
 );
 
 
@@ -64,7 +64,7 @@ ALTER SEQUENCE public.balances_id_seq OWNED BY public.balances.id;
 CREATE TABLE public.logged_users (
     id integer NOT NULL,
     user_id integer NOT NULL,
-    token text NOT NULL
+    token character varying(255) NOT NULL
 );
 
 
@@ -98,10 +98,9 @@ ALTER SEQUENCE public.logged_users_id_seq OWNED BY public.logged_users.id;
 
 CREATE TABLE public.users (
     id integer NOT NULL,
-    name text NOT NULL,
-    email text NOT NULL,
-    password text NOT NULL,
-    online boolean
+    name character varying(255) NOT NULL,
+    email character varying(255) NOT NULL,
+    password character varying(255) NOT NULL
 );
 
 
@@ -155,24 +154,6 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 COPY public.balances (id, user_id, date, description, balance) FROM stdin;
-1	4	2021-10-20	PizzaCo	34.70
-2	4	2021-10-20	McDonalds	60.73
-3	4	2021-10-20	Netflex	50.00
-4	4	2021-10-20	MacBook	-100.00
-6	5	2021-10-10	toddynho	-55.00
-7	4	2021-10-22	teste	-100
-8	4	2021-10-22	teste	100
-12	4	2021-10-22	olokinho	\N
-13	4	2021-10-22	olokinho	\N
-14	4	2021-10-22	olokinho	45.50
-15	4	2021-10-22	teste	-700
-16	4	2021-10-22	novo teste	85
-17	4	2021-10-22	testinho	-55.96
-18	4	2021-10-22	eita	-60
-19	4	2021-10-22	dad	78
-20	4	2021-10-22	eweq	-65
-21	6	2021-10-22	Teste	45
-22	4	2021-10-22	Teste server	1000
 \.
 
 
@@ -188,7 +169,7 @@ COPY public.logged_users (id, user_id, token) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, name, email, password, online) FROM stdin;
+COPY public.users (id, name, email, password) FROM stdin;
 \.
 
 
@@ -196,45 +177,61 @@ COPY public.users (id, name, email, password, online) FROM stdin;
 -- Name: balances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.balances_id_seq', 22, true);
+SELECT pg_catalog.setval('public.balances_id_seq', 6, true);
 
 
 --
 -- Name: logged_users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.logged_users_id_seq', 42, true);
+SELECT pg_catalog.setval('public.logged_users_id_seq', 19, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 200, true);
+SELECT pg_catalog.setval('public.users_id_seq', 54, true);
 
 
 --
--- Name: balances balances_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: balances balances_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.balances
-    ADD CONSTRAINT balances_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT balances_pk PRIMARY KEY (id);
 
 
 --
--- Name: logged_users logged_users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: logged_users logged_users_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.logged_users
-    ADD CONSTRAINT logged_users_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT logged_users_pk PRIMARY KEY (id);
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: users users_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT users_pk PRIMARY KEY (id);
+
+
+--
+-- Name: balances balances_fk0; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.balances
+    ADD CONSTRAINT balances_fk0 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: logged_users logged_users_fk0; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.logged_users
+    ADD CONSTRAINT logged_users_fk0 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --

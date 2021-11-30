@@ -25,7 +25,7 @@ describe('POST /', () => {
 
   it('Should return response status 404 when user is not registered', async () => {
     const user = {};
-    const result = await agent.post('/').send(user);
+    const result = await agent.post('/signin').send(user);
 
     expect(result.status).toEqual(404);
     expect(result.body).toEqual({ message: 'Usuário não encontrado' });
@@ -36,7 +36,7 @@ describe('POST /', () => {
       email: newUser.email,
       password: newUser.wrongPassword(),
     };
-    const result = await agent.post('/').send(user);
+    const result = await agent.post('/signin').send(user);
 
     expect(result.status).toEqual(403);
     expect(result.body).toEqual({ message: 'E-mail/senha incorretos' });
@@ -47,7 +47,7 @@ describe('POST /', () => {
       email: newUser.email,
       password: newUser.password,
     };
-    const result = await agent.post('/').send(user);
+    const result = await agent.post('/signin').send(user);
 
     expect(result.status).toEqual(202);
     expect(result.body).toEqual({
